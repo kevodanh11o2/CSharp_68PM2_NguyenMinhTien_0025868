@@ -16,7 +16,7 @@ namespace CSharp_68PM2_NguyenMinhTien_0025868
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new frmLogin());
+            Application.Run(new Form3());
         }
     }
 }
