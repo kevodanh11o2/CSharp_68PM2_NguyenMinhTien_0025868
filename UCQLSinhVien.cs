@@ -13,6 +13,12 @@ namespace CSharp_68PM2_NguyenMinhTien_0025868
     public partial class UCQLSinhVien : UserControl
     {
         databaseDataContext db = new databaseDataContext();
+        
+        private int pageSize = 10;
+        private int currentPage = 1;
+        private int totalPage = 1;
+        private string searchKeyword = "";
+
         public UCQLSinhVien()
         {
             InitializeComponent();
@@ -32,16 +38,41 @@ namespace CSharp_68PM2_NguyenMinhTien_0025868
         {
            LoadData();
         }
+
         private void LoadData()
         {
-            var dssv = db.SinhViens.Select(s => new {
-                s.mssv,
-                s.hoten,
-                s.ngaysinh,
-                s.gioitinh,
-                s.lop
-               
-            }).ToList();
+            databaseDataContext db = new databaseDataContext();
+            var query = db.SinhViens.AsQueryable();
+
+            if (!string.IsNullOrEmpty(searchKeyword))
+            {
+                query = query.Where(sv =>
+                    sv.mssv.ToLower().Contains(searchKeyword) ||
+                    sv.hoten.ToLower().Contains(searchKeyword) ||
+                    (sv.lop != null && sv.lop.ToString().Contains(searchKeyword))
+                );
+            }
+
+            int totalRecords = query.Count();
+            totalPage = (int)Math.Ceiling((double)totalRecords / pageSize);
+            if (totalPage == 0) totalPage = 1;
+
+            if (currentPage > totalPage) currentPage = totalPage;
+            if (currentPage < 1) currentPage = 1;
+
+            lblTrang.Text = $"Trang {currentPage}/{totalPage}";
+
+            var dssv = query.Skip((currentPage - 1) * pageSize)
+                            .Take(pageSize)
+                            .Select(s => new {
+                                s.mssv,
+                                s.hoten,
+                                s.ngaysinh,
+                                s.gioitinh,
+                                s.lop
+                            })
+                            .ToList();
+
             dgv_DSSV.DataSource = dssv;
         }
 
@@ -214,7 +245,41 @@ namespace CSharp_68PM2_NguyenMinhTien_0025868
             }
         }
 
+        private void btnTim_Click(object sender, EventArgs e)
+        {
+            searchKeyword = txtTimKiem.Text.Trim().ToLower();
+            currentPage = 1;
+            LoadData();
+        }
 
+        private void btnFirst_Click(object sender, EventArgs e)
+        {
+            currentPage = 1;
+            LoadData();
+        }
 
+        private void btnPrev_Click(object sender, EventArgs e)
+        {
+            if (currentPage > 1)
+            {
+                currentPage--;
+                LoadData();
+            }
+        }
+
+        private void btnNext_Click(object sender, EventArgs e)
+        {
+            if (currentPage < totalPage)
+            {
+                currentPage++;
+                LoadData();
+            }
+        }
+
+        private void btnLast_Click(object sender, EventArgs e)
+        {
+            currentPage = totalPage;
+            LoadData();
+        }
     }
 }

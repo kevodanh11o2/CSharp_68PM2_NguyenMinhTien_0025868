@@ -72,6 +72,7 @@ namespace CSharp_68PM2_NguyenMinhTien_0025868
             this.btnLast.TabIndex = 32;
             this.btnLast.Text = ">>";
             this.btnLast.UseVisualStyleBackColor = false;
+            this.btnLast.Click += new System.EventHandler(this.btnLast_Click);
             // 
             // btnNext
             // 
@@ -86,6 +87,7 @@ namespace CSharp_68PM2_NguyenMinhTien_0025868
             this.btnNext.TabIndex = 31;
             this.btnNext.Text = ">";
             this.btnNext.UseVisualStyleBackColor = false;
+            this.btnNext.Click += new System.EventHandler(this.btnNext_Click);
             // 
             // btnPrev
             // 
@@ -100,6 +102,7 @@ namespace CSharp_68PM2_NguyenMinhTien_0025868
             this.btnPrev.TabIndex = 30;
             this.btnPrev.Text = "<";
             this.btnPrev.UseVisualStyleBackColor = false;
+            this.btnPrev.Click += new System.EventHandler(this.btnPrev_Click);
             // 
             // lblTrang
             // 
@@ -124,6 +127,7 @@ namespace CSharp_68PM2_NguyenMinhTien_0025868
             this.btnFirst.TabIndex = 28;
             this.btnFirst.Text = "<<";
             this.btnFirst.UseVisualStyleBackColor = false;
+            this.btnFirst.Click += new System.EventHandler(this.btnFirst_Click);
             // 
             // btnTim
             // 
@@ -138,6 +142,7 @@ namespace CSharp_68PM2_NguyenMinhTien_0025868
             this.btnTim.TabIndex = 26;
             this.btnTim.Text = "Tìm";
             this.btnTim.UseVisualStyleBackColor = false;
+            this.btnTim.Click += new System.EventHandler(this.btnTim_Click);
             // 
             // txtTimKiem
             // 
