@@ -185,6 +185,7 @@ namespace CSharp_68PM2_NguyenMinhTien_0025868
             this.btnSua.TabIndex = 22;
             this.btnSua.Text = "Sửa";
             this.btnSua.UseVisualStyleBackColor = false;
+            this.btnSua.Click += new System.EventHandler(this.btnSua_Click);
             // 
             // btnXoa
             // 
@@ -356,7 +357,7 @@ namespace CSharp_68PM2_NguyenMinhTien_0025868
             this.dgv_DSSV.Name = "dgv_DSSV";
             this.dgv_DSSV.RowHeadersWidth = 51;
             this.dgv_DSSV.RowTemplate.Height = 24;
-            this.dgv_DSSV.Size = new System.Drawing.Size(474, 492);
+            this.dgv_DSSV.Size = new System.Drawing.Size(692, 492);
             this.dgv_DSSV.TabIndex = 36;
             this.dgv_DSSV.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgv_DSSV_CellClick);
             this.dgv_DSSV.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgv_DSSV_CellContentClick);

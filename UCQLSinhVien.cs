@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -34,7 +34,14 @@ namespace CSharp_68PM2_NguyenMinhTien_0025868
         }
         private void LoadData()
         {
-            List<SinhVien> dssv = db.SinhViens.ToList();
+            var dssv = db.SinhViens.Select(s => new {
+                s.mssv,
+                s.hoten,
+                s.ngaysinh,
+                s.gioitinh,
+                s.lop
+               
+            }).ToList();
             dgv_DSSV.DataSource = dssv;
         }
 
@@ -53,7 +60,7 @@ namespace CSharp_68PM2_NguyenMinhTien_0025868
             
             
             
-            databaseDataContext db = new databaseDataContext();
+            // Use the class‑level context (db) for insertion
             db.SinhViens.InsertOnSubmit(sv);
             db.SubmitChanges(); 
             LoadData();
@@ -112,5 +119,56 @@ namespace CSharp_68PM2_NguyenMinhTien_0025868
         {
 
         }
+        private void btnSua_Click(object sender, EventArgs e)
+        {
+            //  Kiểm tra có dòng nào được chọn trong DataGridView
+            if (dgv_DSSV.CurrentRow == null || dgv_DSSV.CurrentRow.Index < 0)
+            {
+                MessageBox.Show("Vui lòng chọn một sinh viên để sửa.", "Cảnh báo",
+                                MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            // Lấy mã sinh viên (khóa chính) từ dòng đang chọn
+            string maSinhVien = dgv_DSSV.CurrentRow.Cells["mssv"].Value?.ToString();
+            if (string.IsNullOrWhiteSpace(maSinhVien))
+            {
+                MessageBox.Show("Mã sinh viên không hợp lệ.", "Lỗi",
+                                MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            // Tìm bản ghi trong DB
+            SinhVien sv = db.SinhViens.FirstOrDefault(s => s.mssv == maSinhVien);
+            if (sv == null)
+            {
+                MessageBox.Show("Không tìm thấy sinh viên trong cơ sở dữ liệu.", "Lỗi",
+                                MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            // Cập nhật các trường từ giao diện
+            sv.hoten = hovaten.Text.Trim();
+            sv.ngaysinh = dtpNgaySinh.Value;
+            sv.gioitinh = cboGioiTinh.Text;
+            // Nếu người dùng chưa chọn lớp thì đặt null, nếu đã chọn thì chuyển sang int
+            sv.lop = (cboLop.SelectedValue != null) ?
+                     Convert.ToInt32(cboLop.SelectedValue) : (int?)null;
+
+            // Lưu lại
+            try
+            {
+                db.SubmitChanges();
+                MessageBox.Show("Cập nhật thành công!", "Thông báo",
+                                MessageBoxButtons.OK, MessageBoxIcon.Information);
+                LoadData();               // làm mới DataGridView
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Lỗi khi cập nhật: {ex.Message}", "Lỗi",
+                                MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
     }
 }
