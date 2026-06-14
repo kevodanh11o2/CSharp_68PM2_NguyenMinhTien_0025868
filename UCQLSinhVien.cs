@@ -71,5 +71,46 @@ namespace CSharp_68PM2_NguyenMinhTien_0025868
         {
 
         }
+
+        private void grbThongTinSinhVien_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+        private void dgv_DSSV_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0)
+            {
+                DataGridViewRow row = dgv_DSSV.Rows[e.RowIndex];
+
+                mssv.Text = row.Cells["mssv"].Value?.ToString();
+                hovaten.Text = row.Cells["hoten"].Value?.ToString();
+
+                if (row.Cells["ngaysinh"].Value != null && row.Cells["ngaysinh"].Value != DBNull.Value)
+                {
+                    dtpNgaySinh.Value = Convert.ToDateTime(row.Cells["ngaysinh"].Value);
+                }
+                else
+                {
+                    dtpNgaySinh.Value = DateTime.Now;
+                }
+
+                cboGioiTinh.Text = row.Cells["gioitinh"].Value?.ToString() ?? "Nam";
+
+                if (row.Cells["lop"].Value != null && row.Cells["lop"].Value != DBNull.Value)
+                {
+                    cboLop.SelectedValue = Convert.ToInt32(row.Cells["lop"].Value);
+                }
+                else
+                {
+                    cboLop.SelectedIndex = -1;
+                }
+            }
+        }
+
+        private void dgv_DSSV_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
     }
 }

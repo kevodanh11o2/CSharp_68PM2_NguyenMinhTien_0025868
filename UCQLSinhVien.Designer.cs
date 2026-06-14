@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Windows.Forms;
 
 namespace CSharp_68PM2_NguyenMinhTien_0025868
@@ -236,6 +236,7 @@ namespace CSharp_68PM2_NguyenMinhTien_0025868
             this.grbThongTinSinhVien.TabIndex = 35;
             this.grbThongTinSinhVien.TabStop = false;
             this.grbThongTinSinhVien.Text = "Thông tin sinh viên";
+            this.grbThongTinSinhVien.Enter += new System.EventHandler(this.grbThongTinSinhVien_Enter);
             // 
             // cboLop
             // 
@@ -357,6 +358,7 @@ namespace CSharp_68PM2_NguyenMinhTien_0025868
             this.dgv_DSSV.RowTemplate.Height = 24;
             this.dgv_DSSV.Size = new System.Drawing.Size(474, 492);
             this.dgv_DSSV.TabIndex = 36;
+            this.dgv_DSSV.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgv_DSSV_CellClick);
             this.dgv_DSSV.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgv_DSSV_CellContentClick);
             // 
             // UCQLSinhVien
@@ -389,10 +391,7 @@ namespace CSharp_68PM2_NguyenMinhTien_0025868
 
         }
 
-        private void dgv_DSSV_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-            throw new NotImplementedException();
-        }
+
 
         #endregion
 
