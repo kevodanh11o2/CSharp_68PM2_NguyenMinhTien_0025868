@@ -121,7 +121,7 @@ namespace CSharp_68PM2_NguyenMinhTien_0025868
         }
         private void btnSua_Click(object sender, EventArgs e)
         {
-            //  Kiểm tra có dòng nào được chọn trong DataGridView
+            // Kiểm tra dòng được chọn
             if (dgv_DSSV.CurrentRow == null || dgv_DSSV.CurrentRow.Index < 0)
             {
                 MessageBox.Show("Vui lòng chọn một sinh viên để sửa.", "Cảnh báo",
@@ -151,7 +151,6 @@ namespace CSharp_68PM2_NguyenMinhTien_0025868
             sv.hoten = hovaten.Text.Trim();
             sv.ngaysinh = dtpNgaySinh.Value;
             sv.gioitinh = cboGioiTinh.Text;
-            // Nếu người dùng chưa chọn lớp thì đặt null, nếu đã chọn thì chuyển sang int
             sv.lop = (cboLop.SelectedValue != null) ?
                      Convert.ToInt32(cboLop.SelectedValue) : (int?)null;
 
@@ -161,7 +160,7 @@ namespace CSharp_68PM2_NguyenMinhTien_0025868
                 db.SubmitChanges();
                 MessageBox.Show("Cập nhật thành công!", "Thông báo",
                                 MessageBoxButtons.OK, MessageBoxIcon.Information);
-                LoadData();               // làm mới DataGridView
+                LoadData();
             }
             catch (Exception ex)
             {
@@ -169,6 +168,53 @@ namespace CSharp_68PM2_NguyenMinhTien_0025868
                                 MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+        // Delete selected sinhvien
+        private void btnXoa_Click(object sender, EventArgs e)
+        {
+            // Kiểm tra dòng được chọn
+            if (dgv_DSSV.CurrentRow == null || dgv_DSSV.CurrentRow.Index < 0)
+            {
+                MessageBox.Show("Vui lòng chọn một sinh viên để xóa.", "Cảnh báo",
+                                MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            // Lấy mã sinh viên
+            string maSinhVien = dgv_DSSV.CurrentRow.Cells["mssv"].Value?.ToString();
+            if (string.IsNullOrWhiteSpace(maSinhVien))
+            {
+                MessageBox.Show("Mã sinh viên không hợp lệ.", "Lỗi",
+                                MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            // Tìm bản ghi
+            SinhVien sv = db.SinhViens.FirstOrDefault(s => s.mssv == maSinhVien);
+            if (sv == null)
+            {
+                MessageBox.Show("Không tìm thấy sinh viên trong cơ sở dữ liệu.", "Lỗi",
+                                MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            // Xóa và lưu
+            try
+            {
+                db.SinhViens.DeleteOnSubmit(sv);
+                db.SubmitChanges();
+                MessageBox.Show("Xóa thành công!", "Thông báo",
+                                MessageBoxButtons.OK, MessageBoxIcon.Information);
+                LoadData();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Lỗi khi xóa: {ex.Message}", "Lỗi",
+                                MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+
 
     }
 }
