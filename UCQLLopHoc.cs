@@ -273,5 +273,23 @@ namespace CSharp_68PM2_NguyenMinhTien_0025868
         {
 
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            if (int.TryParse(textBox4.Text, out int idLop))
+            {
+                string maLop = textBox1.Text;
+                string tenLop = textBox2.Text;
+                using (DSSV frm = new DSSV(idLop, maLop, tenLop))
+                {
+                    frm.ShowDialog();
+                }
+            }
+            else
+            {
+                MessageBox.Show("Vui lòng chọn một lớp học để xem danh sách sinh viên.", "Thông báo",
+                                MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
     }
 }

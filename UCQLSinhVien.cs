@@ -36,7 +36,16 @@ namespace CSharp_68PM2_NguyenMinhTien_0025868
 
         private void UCQLSinhVien_Load(object sender, EventArgs e)
         {
-           LoadData();
+            // Load danh sách lớp vào cboLop từ DB
+            var dsLop = db.LopHocs
+                .Select(lh => new { lh.id, TenHienThi = lh.malop + " - " + lh.tenlop })
+                .ToList();
+            cboLop.DataSource    = dsLop;
+            cboLop.DisplayMember = "TenHienThi";
+            cboLop.ValueMember   = "id";
+            cboLop.SelectedIndex = -1;
+
+            LoadData();
         }
 
         private void LoadData()
@@ -78,26 +87,30 @@ namespace CSharp_68PM2_NguyenMinhTien_0025868
 
         private void btnThem_Click(object sender, EventArgs e)
         {
-            string HoVaten = hovaten.Text;
-            string MaSinhVien = mssv.Text;
-            DateTime NgaySinh = dtpNgaySinh.Value;
-            string GioiTinh = cboGioiTinh.Text;
-            
+            string HoVaten     = hovaten.Text.Trim();
+            string MaSinhVien  = mssv.Text.Trim();
+            DateTime NgaySinh  = dtpNgaySinh.Value;
+            string GioiTinh    = cboGioiTinh.Text;
+
+            if (string.IsNullOrEmpty(MaSinhVien) || string.IsNullOrEmpty(HoVaten))
+            {
+                MessageBox.Show("Vui lòng nhập đầy đủ Mã SV và Họ tên.", "Cảnh báo",
+                                MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
             SinhVien sv = new SinhVien();
-            sv.gioitinh = GioiTinh;
-            sv.ngaysinh = NgaySinh;
-            sv.hoten = HoVaten;
-            sv.mssv = MaSinhVien;
-            
-            
-            
-            // Use the class‑level context (db) for insertion
+            sv.mssv      = MaSinhVien;
+            sv.hoten     = HoVaten;
+            sv.ngaysinh  = NgaySinh;
+            sv.gioitinh  = GioiTinh;
+            sv.lop       = (cboLop.SelectedValue != null)
+                           ? Convert.ToInt32(cboLop.SelectedValue)
+                           : (int?)null;
+
             db.SinhViens.InsertOnSubmit(sv);
-            db.SubmitChanges(); 
+            db.SubmitChanges();
             LoadData();
-
-
-
         }
         
         private void mssv_TextChanged(object sender, EventArgs e)

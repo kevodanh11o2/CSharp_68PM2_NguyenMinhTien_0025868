@@ -206,6 +206,7 @@ namespace CSharp_68PM2_NguyenMinhTien_0025868
             this.btnXoa.Text = "Xóa";
             this.btnXoa.UseVisualStyleBackColor = false;
             this.btnXoa.Click += new System.EventHandler(this.btnXoa_Click);
+            // 
             // btnThem
             // 
             this.btnThem.BackColor = System.Drawing.Color.CornflowerBlue;
